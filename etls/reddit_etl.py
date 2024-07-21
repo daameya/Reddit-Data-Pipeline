@@ -5,6 +5,8 @@ import pandas as pd
 import praw
 from praw import Reddit
 
+from utils.constants import POST_FIELDS
+
 def connect_reddit(client_id, client_secret, user_agent) -> Reddit:
     try:
         reddit = praw.Reddit(client_id = client_id, 
@@ -22,5 +24,11 @@ def extract_posts(reddit_instance: Reddit, subreddit: str, time_filter: str, lim
 
     post_lists = []
 
-    print(posts)
-    #for post in posts:
+    
+    for post in posts:
+        post_dict = vars(post)
+        post = {key: post_dict[key] for key in POST_FIELDS}
+        post_lists.append(post)
+        
+    return post_lists
+
